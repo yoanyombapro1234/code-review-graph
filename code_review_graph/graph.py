@@ -435,7 +435,7 @@ class GraphStore:
         """Build (or return cached) in-memory NetworkX directed graph from all edges."""
         if self._nxg_cache is not None:
             return self._nxg_cache
-        g = nx.DiGraph()
+        g: nx.DiGraph = nx.DiGraph()
         rows = self._conn.execute("SELECT * FROM edges").fetchall()
         for r in rows:
             g.add_edge(r["source_qualified"], r["target_qualified"], kind=r["kind"])

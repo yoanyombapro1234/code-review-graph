@@ -328,24 +328,24 @@ def incremental_update(
     for rel_path in all_files:
         if _should_ignore(rel_path, ignore_patterns):
             continue
-        full_path = repo_root / rel_path
-        if not full_path.is_file():
+        abs_path = repo_root / rel_path
+        if not abs_path.is_file():
             # File was deleted
-            store.remove_file_data(str(full_path))
+            store.remove_file_data(str(abs_path))
             continue
-        if parser.detect_language(full_path) is None:
+        if parser.detect_language(abs_path) is None:
             continue
 
         try:
-            fhash = file_hash(full_path)
+            fhash = file_hash(abs_path)
             # Check if file actually changed (compare against stored file_hash column)
-            existing_nodes = store.get_nodes_by_file(str(full_path))
+            existing_nodes = store.get_nodes_by_file(str(abs_path))
             if existing_nodes and existing_nodes[0].file_hash == fhash:
                 # Skip unchanged files (hash match)
                 continue
 
-            nodes, edges = parser.parse_file(full_path)
-            store.store_file_nodes_edges(str(full_path), nodes, edges, fhash)
+            nodes, edges = parser.parse_file(abs_path)
+            store.store_file_nodes_edges(str(abs_path), nodes, edges, fhash)
             total_nodes += len(nodes)
             total_edges += len(edges)
         except (OSError, PermissionError) as e:

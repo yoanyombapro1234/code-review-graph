@@ -434,7 +434,7 @@ def _extract_relevant_lines(
         else:
             merged.append((start, end))
 
-    parts = []
+    parts: list[str] = []
     for start, end in merged:
         if parts:
             parts.append("...")

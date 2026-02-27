@@ -194,10 +194,10 @@ class CodeParser:
     def __init__(self) -> None:
         self._parsers: dict[str, object] = {}
 
-    def _get_parser(self, language: str):
+    def _get_parser(self, language: str):  # type: ignore[arg-type]
         if language not in self._parsers:
             try:
-                self._parsers[language] = tslp.get_parser(language)
+                self._parsers[language] = tslp.get_parser(language)  # type: ignore[arg-type]
             except Exception:
                 return None
         return self._parsers[language]
